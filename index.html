@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Controle VM QA</title>
+  <style>
+    body { font-family: Arial; padding: 40px }
+    button { margin-right: 10px; padding: 10px 20px }
+  </style>
+</head>
+<body>
+
+<h1>Servidor QA</h1>
+
+<p>Status atual: <strong><span id="status">Carregando...</span></strong></p>
+
+<button onclick="ligar()">Ligar</button>
+<button onclick="desligar()">Desligar</button>
+<button onclick="status()">Atualizar status</button>
+
+<script>
+const baseUrl = "https://fn-start-stop-vm-qa-ffc5dfe7cagjanf7.brazilsouth-01.azurewebsites.net/api/HttpTrigger1";
+const code = "tUENmIsJSDsnzd9BpnOMCu1dEW6YgJQLl1q7K9QjIToVAzFueBwKrg==";
+
+function ligar() {
+  fetch(`${baseUrl}?action=start&code=${code}`)
+    .then(r => r.json())
+    .then(d => alert(d.message));
+}
+
+function desligar() {
+  fetch(`${baseUrl}?action=stop&code=${code}`)
+    .then(r => r.json())
+    .then(d => alert(d.message));
+}
+
+function status() {
+  fetch(`${baseUrl}?action=status&code=${code}`)
+    .then(r => r.json())
+    .then(d => {
+      document.getElementById("status").innerText = d.status;
+    });
+}
+
+status();
+</script>
+
+</body>
+</html>
